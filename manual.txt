@@ -18,6 +18,13 @@ Aboloka-8
         bably will never write assembly code for their actual home compu-
         ters.
 
+        At the github repository for Aboloka-8 there are two implementat-
+        ions of the specification defined in this manual and other liter-
+        ature regarding the Aboloka-8. There is an implentation in C usi-
+        ng SDL for graphics. The second implementation is written in JS
+        using Canvas for graphics. The github is visible at Avuxo's page
+        at https://github.com/avuxo/aboloka-8
+
 
 :: Specifications
 
@@ -84,5 +91,27 @@ Aboloka-8
         The Aboloka-8 comes with two virtual tape drives. These tape drives
         are interfaced with via the ld command.
 
-        When ld is run on a drive, it begins reading code at $00. Any progr
+        When ld is run on a drive, it begins reading code at $00. Any prog-
+        gram there will be loaded.
+
+        Tapes contain 54kb of storage for writing and distributing tapes.
+        Tapes can be distributed from your host operating system using the
+        .tape file format.
+        
+:: Instruction set
+
+        The Aboloka-8 uses 8-bit opcodes that translate 1:1 with the mneu-
+        monic instruction set.
+
+        ld $ADDRESS, $VALUE  10   load the hex literal VALUE into ADDRESS
+        ldx $VALUE           11   load the hex literal value VALUE into X
+        ldy $VALUE           12   load the hex literal value VALUE into Y
+        ldz $VALUE           13   load the hex literal value VALUE into Z
+        lda $VALUE           14   load the hex literal value VALUE into A
+        cpx $VALUE           1A   compare the hex value VALUE with X
+        cpy $VALUE           1B   compare the hex value VALUE with Y
+        jmp $VALUE           20   jump to the memory location VALUE
+        jmp REG              20   jump to the register REG
+        add $VALUE           30   add VALUE to A
+        sub $VALUE           31   subtract VALUE form A
         
