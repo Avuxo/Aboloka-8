@@ -111,7 +111,9 @@ Aboloka-8
         cpx $VALUE           1A   compare the hex value VALUE with X
         cpy $VALUE           1B   compare the hex value VALUE with Y
         jmp $VALUE           20   jump to the memory location VALUE
-        jmp REG              20   jump to the register REG
+        jmp REG              21   jump to the register REG
         add $VALUE           30   add VALUE to A
         sub $VALUE           31   subtract VALUE form A
+        print $ADDRESS       56   print at ADDRESS until a 0x00 is found
+        exit                 EA   exit the program
         
