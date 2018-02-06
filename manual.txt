@@ -1,0 +1,88 @@
+========================================================================
+
+Aboloka-8 Reference Manual
+          Created by Avuxo
+
+=========================================================================
+
+Aboloka-8
+
+        The Aboloka-8 is a fantasy retro computer based off of old soviet
+        home computers. The system is inspired by projects like Pico-8.
+        Unlike with systems like the Pico-8 (a fantasy retro console), it
+        is not a game console, and is more reminiscent the ZX Spectrum.
+
+        The Aboloka-8 provides a custom instruction set specifically tai-
+        lored to make assembly programming fun and accesible to provide
+        an introduction to a generation of people who have never and pro-
+        bably will never write assembly code for their actual home compu-
+        ters.
+
+
+:: Specifications
+
+        Display: 128x128 pixels, monochrome
+        Input: 30 key keyboard. 0-9, a-Z, shift, space, execute
+        Memory size: 16KB
+        Tape size: 54KB (can hold 2 tapes, both R/W)
+        Internal storage: 16KB
+        8-bit Registers: 4 (X,Y,Z,A -- X,Y,Z General; A accumulator)
+
+:: Hello world!
+
+        Below is an example of how the standard hello world would look
+        in the instruction set used by Aboloka-8.
+
+        In order to get to the point where you can write this program,
+        type ed at the prompt. This will open up the standard Aboloka-8
+        editor. From here, enter insertion mode at line 0 by typing i 0.
+
+        PROGRAM hello
+        ld "Hello, world!", $02 ; load "Hello world" into 0x02 in memory
+        ld 0, $11 ; load a null terminator into $11
+        PRINT $FF ; print whatever is between $FF and null term.
+        exit ; return to OS
+
+        Note: for more info on the instruction set, look at the "program-
+        ming" section later in this manual.
+        
+        exit and save by hitting the ESC key and typing :wq hello.a
+        This will save the file as hello.a on the local 16kb internal
+        storage.
+
+        To create an executable program, type asm hello.a hello EXEC into
+        the propmt. This will assemble the program and produce an execu-
+        table program.
+
+:: The OS
+
+        The Aboloka-8 comes with a built in operating system that is aut-
+        omatically loaded from the internal ROM. The operating system is
+        written in Aboloka-8 assembly and is replacable if you want a di-
+        fferent experience with the Aboloka.
+
+        The OS comes with a list of built in programs that can be execut-
+        ed to perform basic tasks.
+           ed          the basic editor, a line based text editor
+           mv          move files from x y
+           asm         the assembler for all user programs
+           rm          remove a file forever (overwrites with zeros)
+           ld          load a tape (takes argument 0 or 1) see: tapes
+
+        Programs can be run any time that there is a $ showing (indicati-
+        ng that the prompt is ready to be run).
+
+        Arguments are provided to programs by separating them by spaces.
+        ex: rm hello.a EXEC would delete the file hello.a
+
+        The OS does not support sub-directories. Everything is stored in
+        the root directory or on a tape.
+
+
+:: Tapes
+
+        The Aboloka-8 comes with two virtual tape drives. These tape drives
+        are interfaced with via the ld command.
+
+        When ld is run on a drive, it begins reading code at $00. Any progr
+        
