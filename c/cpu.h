@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "display.h"
 
 struct CPU{
     /*program counter*/
@@ -18,7 +19,8 @@ struct Tape{
 
 struct System{
     struct CPU cpu;
-
+    struct Display display;
+    
     /*64kb of memory*/
     uint8_t memory[64000];
 

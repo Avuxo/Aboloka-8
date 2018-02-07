@@ -75,7 +75,9 @@ void executeProgram(struct System *sys, uint8_t *program){
 
 /*load value into memory*/
 void cpu_load(struct System *sys, uint8_t addrB1, uint8_t addrB2, uint8_t val){
+    /*comine the first two bytes into a single 16 bit address*/
     uint16_t address = addrB1 | (addrB2 << 8);
+    /*load val into address*/
     sys->memory[address] = val;
 }
 

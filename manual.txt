@@ -1,9 +1,9 @@
-==========================================================================
+======================================================================================
 
 Aboloka-8 Reference Manual
           Created by Avuxo
 
-===========================================================================
+======================================================================================
 
 Aboloka-8
 
@@ -30,7 +30,7 @@ Aboloka-8
 
         Display: 128x128 pixels, monochrome
         Input: 30 key keyboard. 0-9, a-Z, shift, space, execute
-        Memory size: 16KB
+        Memory size: 64KB
         Tape size: 54KB (can hold 2 tapes, both R/W)
         Internal storage: 16KB
         8-bit Registers: 4 (X,Y,Z,A -- X,Y,Z General; A accumulator)
@@ -45,8 +45,8 @@ Aboloka-8
         editor. From here, enter insertion mode at line 0 by typing i 0.
 
         PROGRAM hello
-        ld $0002 ; load "Hello world" into 0x02 in memory
-        ld $000B ; load a null terminator into 0x0B in memory
+        ld $0002, "Hello, world!" ; load "Hello world" into 0x02 in memory
+        ld $000B, #$00 ; load a null terminator into 0x0B in memory
         PRINT $02 ; print whatever is between 0x02 and null term.
         exit ; return to OS
 
@@ -103,18 +103,46 @@ Aboloka-8
         The Aboloka-8 uses 8-bit opcodes that translate 1:1 with the mneu-
         monic instruction set.
 
-        instruction          op   description                       length
-        ld $ADDRESS, $VALUE  10   load the hex VALUE into ADDRESS        4
-        ldx $VALUE           11   load the hex value VALUE into X        2
-        ldy $VALUE           12   load the hex value VALUE into Y        2
-        ldz $VALUE           13   load the hex value VALUE into Z        2
-        lda $VALUE           14   load the hex value VALUE into A        2
-        cpx $VALUE           1A   compare the hex value VALUE with X     2
-        cpy $VALUE           1B   compare the hex value VALUE with Y     2
-        jmp $VALUE           20   jump to the memory location VALUE      2
-        jmp REG              21   jump to the register REG               2
-        add $VALUE           30   add VALUE to A                         2
-        sub $VALUE           31   subtract VALUE form A                  2
-        print $ADDRESS       56   print at ADDRESS until a 0x00 is found 3
-        exit                 EA   exit the program                       1
+        Any number prefixed with a $ is in hexadecimal. Any number prefix-
+        xed with a # is a literal value.
+
+        instruction           op   description                       length
+        ld $ADDRESS, #$VALUE  10   load the hex VALUE into ADDRESS        4
+        ldx #$VALUE           11   load the hex value VALUE into X        2
+        ldy #$VALUE           12   load the hex value VALUE into Y        2
+        ldz #$VALUE           13   load the hex value VALUE into Z        2
+        lda #$VALUE           14   load the hex value VALUE into A        2
+        cpx #$VALUE           1A   compare the hex value VALUE with X     2
+        cpy #$VALUE           1B   compare the hex value VALUE with Y     2
+        jmp #$VALUE           20   jump to the memory location VALUE      2
+        jmp REG               21   jump to the register REG               2
+        add #$VALUE           30   add VALUE to A                         2
+        sub #$VALUE           31   subtract VALUE form A                  2
+        print $ADDRESS        56   print at ADDRESS until a 0x00 is found 3
+        exit                  EA   exit the program                       1
         
+
+:: Memory Layout
+
+        In the Aboloka-8 there are a number of important memory regions.
+        The system has no memory safety, which means that any program can
+        write anywhere in memory.
+
+        $0000-$3FFF free memory for user use.
+        $4000-$8000 graphics memory (each byte is 1 pixel).
+        $3000-$30FF keyboard input memory.
+        $30FF-$FA00 free memory for user use.
+        
+
+
+:: Graphics programming
+
+        In order to write to a specific pixel, an 8-bit color value is writ-
+        ten to a specific area in memory. Whatever value is in that byte wi-
+        ll be drawn to the screen when it comes time for the screen to be r-
+        efreshed.
+
+        The graphics block of memory starts at $4000 and goes to $8000. Any
+        8-bit color value can be drawn here. if a byte is $00 then it will
+        be drawn as black. In order to clear the screen, the memory should
+        simply be zeroed out.
