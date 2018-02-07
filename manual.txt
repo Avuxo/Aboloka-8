@@ -1,9 +1,9 @@
-========================================================================
+==========================================================================
 
 Aboloka-8 Reference Manual
           Created by Avuxo
 
-=========================================================================
+===========================================================================
 
 Aboloka-8
 
@@ -45,9 +45,9 @@ Aboloka-8
         editor. From here, enter insertion mode at line 0 by typing i 0.
 
         PROGRAM hello
-        ld "Hello, world!", $02 ; load "Hello world" into 0x02 in memory
-        ld 0, $11 ; load a null terminator into $11
-        PRINT $FF ; print whatever is between $FF and null term.
+        ld $0002 ; load "Hello world" into 0x02 in memory
+        ld $000B ; load a null terminator into 0x0B in memory
+        PRINT $02 ; print whatever is between 0x02 and null term.
         exit ; return to OS
 
         Note: for more info on the instruction set, look at the "program-
@@ -103,17 +103,18 @@ Aboloka-8
         The Aboloka-8 uses 8-bit opcodes that translate 1:1 with the mneu-
         monic instruction set.
 
-        ld $ADDRESS, $VALUE  10   load the hex literal VALUE into ADDRESS
-        ldx $VALUE           11   load the hex literal value VALUE into X
-        ldy $VALUE           12   load the hex literal value VALUE into Y
-        ldz $VALUE           13   load the hex literal value VALUE into Z
-        lda $VALUE           14   load the hex literal value VALUE into A
-        cpx $VALUE           1A   compare the hex value VALUE with X
-        cpy $VALUE           1B   compare the hex value VALUE with Y
-        jmp $VALUE           20   jump to the memory location VALUE
-        jmp REG              21   jump to the register REG
-        add $VALUE           30   add VALUE to A
-        sub $VALUE           31   subtract VALUE form A
-        print $ADDRESS       56   print at ADDRESS until a 0x00 is found
-        exit                 EA   exit the program
+        instruction          op   description                       length
+        ld $ADDRESS, $VALUE  10   load the hex VALUE into ADDRESS        4
+        ldx $VALUE           11   load the hex value VALUE into X        2
+        ldy $VALUE           12   load the hex value VALUE into Y        2
+        ldz $VALUE           13   load the hex value VALUE into Z        2
+        lda $VALUE           14   load the hex value VALUE into A        2
+        cpx $VALUE           1A   compare the hex value VALUE with X     2
+        cpy $VALUE           1B   compare the hex value VALUE with Y     2
+        jmp $VALUE           20   jump to the memory location VALUE      2
+        jmp REG              21   jump to the register REG               2
+        add $VALUE           30   add VALUE to A                         2
+        sub $VALUE           31   subtract VALUE form A                  2
+        print $ADDRESS       56   print at ADDRESS until a 0x00 is found 3
+        exit                 EA   exit the program                       1
         
