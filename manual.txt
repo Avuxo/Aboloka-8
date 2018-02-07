@@ -75,6 +75,7 @@ Aboloka-8
            asm         the assembler for all user programs
            rm          remove a file forever (overwrites with zeros)
            ld          load a tape (takes argument 0 or 1) see: tapes
+           mem         print current memory usage
 
         Programs can be run any time that there is a $ showing (indicati-
         ng that the prompt is ready to be run).
@@ -85,6 +86,12 @@ Aboloka-8
         The OS does not support sub-directories. Everything is stored in
         the root directory or on a tape.
 
+
+        If you ever need to restart the Aboloka-8, use the ESC key on yo-
+        ur computer. This will restart the computer and clear the RAM.
+
+        Before a restart, ensure that you have put any code that you wis-
+        h to backup up on a tape. Tapes will NOT be cleared at restart.
 
 :: Tapes
 
@@ -128,7 +135,8 @@ Aboloka-8
         The system has no memory safety, which means that any program can
         write anywhere in memory.
 
-        $0000-$3FFF free memory for user use.
+        $0000-$1000 ROM for programs and OS
+        $1001-$3FFF free memory for user use.
         $4000-$8000 graphics memory (each byte is 1 pixel).
         $3000-$30FF keyboard input memory.
         $30FF-$FA00 free memory for user use.
@@ -146,3 +154,21 @@ Aboloka-8
         8-bit color value can be drawn here. if a byte is $00 then it will
         be drawn as black. In order to clear the screen, the memory should
         simply be zeroed out.
+
+        The following code snippet will draw a white box in the top left of
+        the screen (exit the program by restarting as you will be in an in-
+        finite loop).
+
+        PROGRAM box
+        label draw:
+        ld $4000, #$01
+        ld $4001, #$01
+        ld $4081, #$01
+        ld $4082, #$01
+        jmp draw
+
+        The above code functions because it loads the value $01 (white) into
+        the block of memory used to draw graphics. The code constantly jumps
+        to the start to make sure that it continues drawing and never exits.
+
+        As such, the code cannot be exited without a full system restart.
