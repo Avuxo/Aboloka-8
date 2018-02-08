@@ -114,21 +114,38 @@ Aboloka-8
         xed with a # is a literal value.
 
         instruction           op   description                       length
+        ====================  ==   ================================= ======        
         ld $ADDRESS, #$VALUE  10   load the hex VALUE into ADDRESS        4
         ldx #$VALUE           11   load the hex value VALUE into X        2
         ldy #$VALUE           12   load the hex value VALUE into Y        2
         ldz #$VALUE           13   load the hex value VALUE into Z        2
         lda #$VALUE           14   load the hex value VALUE into A        2
+        ldx $ADDRESS          15   load the value at an address into X    3
+        ldy $ADDRESS          16   load the value at an address into Y    3
+        ldz $ADDRESS          17   load the value at an address into Z    3
+        lda $ADDRESS          18   load the value at an address into A    3
+        
         cpx #$VALUE           1A   compare the hex value VALUE with X     2
         cpy #$VALUE           1B   compare the hex value VALUE with Y     2
-        jmp #$VALUE           20   jump to the memory location VALUE      2
+        cpz #$VALUE           1C   compare the hex value VALUE with Z     2
+        
+        jmp #$VALUE           20   jump to the memory location VALUE      3
         jmp REG               21   jump to the register REG               2
-        je  $# VALUE          22   jump only if eq flag is set            2
+        je  $ADDRESS          22   jump only if eq flag is set            3
+        jne $ADDRESS          23   jump only if eq flag is not set        3
+        
         add #$VALUE           30   add VALUE to A                         2
         sub #$VALUE           31   subtract VALUE form A                  2
+        inc $ADDRESS          32   add 1 to whatever value is in ADDRESS  3
+        inc REG               33   add 1 to whatever is in the register   2
+        dec $ADDRESS          34   subtract one from ADDRESS' value       3
+        dec REG               35   subtract one from whatever is in REG   2
+        
         clf                   40   clear all status flags                 1
+        
         emit #$VALUE          55   echo a single ascii character          2
         print $ADDRESS        56   print at ADDRESS until a 0x00 is found 3
+        
         exit                  EA   exit the program                       1
         
 
