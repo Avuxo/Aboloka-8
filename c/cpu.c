@@ -47,6 +47,18 @@ void executeProgram(struct System *sys, uint8_t *program){
             /*load the value into the accumulator*/
             sys->cpu.regA = program[++sys->cpu.pc];
             break;
+
+        case 0x1A: /*compare with the X register*/
+            if(sys->cpu.regA == program[++sys->cpu.pc])
+                /*set the eq flag*/
+                sys->cpu.flags |= 0x01;
+            break;
+        case 0x1B:
+            //addrB1 | (addrB2 << 8);
+            if(sys->cpu.regA ==
+               sys->memory[program[++sys->cpu.pc | (++sys->cpu.pc << 8)]])
+                sys->cpu.flags |= 0x01;
+            
         case 0x20:
             /*jump to the next location*/
             sys->cpu.pc = program[++sys->cpu.pc];
@@ -69,7 +81,7 @@ void executeProgram(struct System *sys, uint8_t *program){
 
         case 0x22:
             /*check if eq flag is set*/
-            if(((sys->cpu.flags >> 1) & 1U) == 1)
+            if(((sys->cpu.flags) & 0x01) == 1)
                 /*if set, jump*/
                 sys->cpu.pc = program[++sys->cpu.pc];
 
