@@ -123,8 +123,11 @@ Aboloka-8
         cpy #$VALUE           1B   compare the hex value VALUE with Y     2
         jmp #$VALUE           20   jump to the memory location VALUE      2
         jmp REG               21   jump to the register REG               2
+        je  $# VALUE          22   jump only if eq flag is set            2
         add #$VALUE           30   add VALUE to A                         2
         sub #$VALUE           31   subtract VALUE form A                  2
+        clf                   40   clear all status flags                 1
+        emit #$VALUE          55   echo a single ascii character          2
         print $ADDRESS        56   print at ADDRESS until a 0x00 is found 3
         exit                  EA   exit the program                       1
         
@@ -140,8 +143,25 @@ Aboloka-8
         $4000-$8000 graphics memory (each byte is 1 pixel).
         $3000-$30FF keyboard input memory.
         $30FF-$FA00 free memory for user use.
-        
 
+
+:: CPU Status Flags
+
+        The Aboloka-8's CPU features an unsigned 8-bit integer holding all
+        of the system's flags.
+
+        The bits are arranged as follows:
+
+        A B C D   E F G H
+        | | | |   | | | |
+        | | | |   | | | +- eq flag, set when a cmp returns true
+        | | | |   | | +--- none (currently unused)  
+        | | | |   | +----- none (currently unused)
+        | | | |   +------- none (currently unused)
+        | | | +----------- none (currently unused)
+        | | +------------- none (currently unused)
+        | +--------------- none (currently unused)
+        +----------------- none (currently unused)
 
 :: Graphics programming
 
