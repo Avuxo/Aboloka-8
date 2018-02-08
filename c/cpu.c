@@ -66,7 +66,17 @@ void executeProgram(struct System *sys, uint8_t *program){
                 sys->cpu.pc = sys->cpu.regA;
             }
             break;
-            
+
+        case 0x22:
+            /*check if eq flag is set*/
+            if(((sys->cpu.flags >> 1) & 1U) == 1)
+                /*if set, jump*/
+                sys->cpu.pc = program[++sys->cpu.pc];
+
+            break;
+        case 0x55:
+            /*call a subroutine to write to the right place in memory*/
+            printf("%c\n", program[++sys->cpu.pc]);
         }
         /*consume previous byte*/
         sys->cpu.pc++;
