@@ -126,8 +126,11 @@ Aboloka-8
         lda $ADDRESS          18   load the value at an address into A    3
         
         cpx #$VALUE           1A   compare the hex value VALUE with X     2
-        cpy #$VALUE           1B   compare the hex value VALUE with Y     2
-        cpz #$VALUE           1C   compare the hex value VALUE with Z     2
+        cpx $ADDRESS          1B   compare X with the value at address    3
+        cpy #$VALUE           1C   compare the hex value VALUE with Y     2
+        cpy $ADDRESS          1D   compare Y with the value at address    3
+        cpz #$VALUE           1E   compare the hex value VALUE with Z     2
+        cpz $ADDRESS          1F   compare Z with the value at address    3
         
         jmp #$VALUE           20   jump to the memory location VALUE      3
         jmp REG               21   jump to the register REG               2
