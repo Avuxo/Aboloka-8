@@ -14,6 +14,8 @@ void printRegisters(struct Debugger debug){
 }
 
 void printProgramSegment(struct Debugger debug, int startPoint, int numLines){
+    /*NOTE:
+      unsafe code, does not contain bounds checking*/
     for(int i=0; i<numLines; i++){
         printf("%d |",startPoint + i);
         for(int j=0; j<debug.opcodesPerLine; j++){
