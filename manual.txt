@@ -174,9 +174,9 @@ Aboloka-8
 
         A B C D   E F G H
         | | | |   | | | |
-        | | | |   | | | +- eq flag, set when a cmp returns true
-        | | | |   | | +--- none (currently unused)  
-        | | | |   | +----- none (currently unused)
+        | | | |   | | | +- eq flag,  when a cmp returns true
+        | | | |   | | +--- carry flag, on unsigned arithmetic with carry
+        | | | |   | +----- overflow flag, used in signed arithmetic
         | | | |   +------- none (currently unused)
         | | | +----------- none (currently unused)
         | | +------------- none (currently unused)

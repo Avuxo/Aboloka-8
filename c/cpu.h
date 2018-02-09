@@ -10,6 +10,9 @@ struct CPU{
     uint8_t regY;
     uint8_t regZ;
 
+    /*bit 1 = eq flag
+      bit 2 = carry flag
+      bit 3 = overflow flag*/
     uint8_t flags;
 };
 

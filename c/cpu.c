@@ -54,9 +54,11 @@ void executeProgram(struct System *sys, uint8_t *program){
                 sys->cpu.flags |= 0x01;
             break;
         case 0x1B:
-            //addrB1 | (addrB2 << 8);
+
+            /*check if the address is the same as the A value*/
             if(sys->cpu.regA ==
                sys->memory[program[++sys->cpu.pc | (++sys->cpu.pc << 8)]])
+                /*set the eq flag*/
                 sys->cpu.flags |= 0x01;
             
         case 0x20:
@@ -85,6 +87,11 @@ void executeProgram(struct System *sys, uint8_t *program){
                 /*if set, jump*/
                 sys->cpu.pc = program[++sys->cpu.pc];
 
+            break;
+
+        case 0x40:
+            /*clear all flags*/
+            sys->cpu.flags = 0;
             break;
         case 0x55:
             /*call a subroutine to write to the right place in memory*/
