@@ -136,13 +136,18 @@ Aboloka-8
         jmp REG               21   jump to the register REG               2
         je  $ADDRESS          22   jump only if eq flag is set            3
         jne $ADDRESS          23   jump only if eq flag is not set        3
-        
+
+        call $ADDRESS         25   jump and push return addr to stack     3
+        ret                   26   pop ret address off the stack and jump 1
+
         add #$VALUE           30   add VALUE to A                         2
-        sub #$VALUE           31   subtract VALUE form A                  2
-        inc $ADDRESS          32   add 1 to whatever value is in ADDRESS  3
-        inc REG               33   add 1 to whatever is in the register   2
-        dec $ADDRESS          34   subtract one from ADDRESS' value       3
-        dec REG               35   subtract one from whatever is in REG   2
+        adm $ADDRESS, #$VALUE 31   add VALUE to memory location ADDRESS   4
+        sub #$VALUE           32   subtract VALUE form A                  2
+        sbm $ADDRESS, #$VALUE 33   sub VALUE from memory @ADDRESS         4
+        inc $ADDRESS          34   add 1 to whatever value is in ADDRESS  3
+        inc REG               35   add 1 to whatever is in the register   2
+        dec $ADDRESS          36   subtract one from ADDRESS' value       3
+        dec REG               37   subtract one from whatever is in REG   2
         
         clf                   40   clear all status flags                 1
         
@@ -150,7 +155,33 @@ Aboloka-8
         print $ADDRESS        56   print at ADDRESS until a 0x00 is found 3
         
         exit                  EA   exit the program                       1
-        
+
+
+:: Subroutines
+
+        Subroutines are created using the label syntax seen in other diale-
+        cts of assembly. Although in machine code the opcode jumps to a lo-
+        cation in the program, when actually programming, you can use simp-
+        le to use names.
+
+        ; subroutine to add 2 numbers
+        ; add (int a, in b) -> (int c)
+        add:
+            add X ; add A to X
+            ret   ; jump back to call location
+
+        ldX $3B  ; load 0x3B into X
+        ldA $6   ; load 0x06 into A
+        call add ; call the add subroutine
+        emit     ; print out the char 'A'
+
+
+        When creating a subroutine, the 'call' and 'ret' instructions are
+        used. call pushes the return address onto the stack and jumps to
+        the subroutine, and ret returns to the location pushed to the st-
+        ack. Due to direct memory access being possible, the stack is re-
+        ally only used as a call stack. This call stack is only 500 bytes
+        wide, so deep recursion is not advised.
 
 :: Memory Layout
 
@@ -159,6 +190,7 @@ Aboloka-8
         write anywhere in memory.
 
         $0000-$1000 ROM for programs and OS
+        $1001-$11f5 call stack
         $1001-$3FFF free memory for user use.
         $4000-$8000 graphics memory (each byte is 1 pixel).
         $3000-$30FF keyboard input memory.
