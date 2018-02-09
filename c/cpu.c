@@ -83,15 +83,30 @@ void executeProgram(struct System *sys, uint8_t *program){
 
         case 0x22:
             /*check if eq flag is set*/
-            if(((sys->cpu.flags) & 0x01) == 1)
+            if(((sys->cpu.flags) & 0x01) == 0x01)
                 /*if set, jump*/
                 sys->cpu.pc = program[++sys->cpu.pc];
 
             break;
 
+        case 0x30:{ /*add to the accumulator*/
+            int addNum = program[++sys->cpu.pc];
+            /*check for overflow*/
+            if((sys->cpu.regA + addNum) > 0xFF){
+                /*set the overflow flag*/
+                sys->cpu.flags |= 0x01 << 1;
+                /*set the accumulator to the result*/
+                sys->cpu.regA = (0xFF - addNum);
+            } else {
+                /*clear overflow bit and add to the accumulator*/
+                sys->cpu.flags &= ~(0x01 << 1);
+                sys->cpu.regA += addNum;
+            }
+        }
+            
         case 0x40:
             /*clear all flags*/
-            sys->cpu.flags = 0;
+            sys->cpu.flags = 0x00;
             break;
         case 0x55:
             /*call a subroutine to write to the right place in memory*/
