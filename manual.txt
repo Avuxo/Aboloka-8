@@ -173,7 +173,7 @@ Aboloka-8
         ldX $3B  ; load 0x3B into X
         ldA $6   ; load 0x06 into A
         call add ; call the add subroutine
-        emit     ; print out the char 'A'
+        emit A   ; print out the char 'A'
 
 
         When creating a subroutine, the 'call' and 'ret' instructions are
@@ -182,6 +182,10 @@ Aboloka-8
         ack. Due to direct memory access being possible, the stack is re-
         ally only used as a call stack. This call stack is only 500 bytes
         wide, so deep recursion is not advised.
+
+        The call stack goes from $1001-$11f5, if the subroutine attempts
+        to push an address any further than that, it will raise a stack
+        overflow exception.
 
 :: Memory Layout
 
