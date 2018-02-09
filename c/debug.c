@@ -2,6 +2,28 @@
 
 #include "debug.h"
 
+/*
+                 ===! UH OH, HACK ALERT !===
+  
+  This code is NOT for use in the actual Aboloka-8 source code
+  and is intended for use ONLY in the testing stage while the
+  code is in the console stage being tested in a terminal.
+  This code uses libc print functions and does NOT call display
+  drawing functions.
+
+  Furthermore, it contains UNSAFE code in printProgramSegment()
+  because that code has array indexing WITHOUT bounds checking
+  that makes the extremely naive assumption that uint8_t program
+  is of size n*8. Later on, these functions will be replaced
+  with system callable functions so that a proper debugger can
+  be implemented inside of the Aboloka-8.
+
+  These functions are TEMPORARY, this code should NEVER be seen
+  outside of the pre-SDL build. 
+  
+
+*/
+
 struct Debugger initDebugger(uint8_t *program, struct System *sys){
     struct Debugger debug = {sys, program, 0x08};
     return debug;
