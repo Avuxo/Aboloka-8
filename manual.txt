@@ -157,6 +157,44 @@ Aboloka-8
         exit                  EA   exit the program                       1
 
 
+:: Opcodes
+
+        The Aboloka-8 uses 32 bit fixed-width instructions separated into 4
+        bytes. However, not all instructions use all 32 bits, all unused
+        bits are simply zeroed out in this case. The below diagram explains
+        the bit pattern of opcodes.
+
+        01 23 45 67
+         |  |  |  |
+         |  |  |  +----- Operand byte 3
+         |  |  +-------- Operand byte 2
+         |  +----------- Operand byte 1
+         +-------------- The opcode (the operation)
+
+        For example: the assembly instruction
+
+        ld $0040, #$30
+
+        would translate to the bit pattern
+
+        10 00 40 30
+         |  |  |  |
+         |  |  |  +----- The byte being written to the address  (arg2)
+         |  |  +-------- The second byte of 0x040 (the address) (arg1)
+         |  +----------- The first byte of 0x0040 (the address) (arg1)
+         +-------------- The ld instruction
+
+        For an example of an instruction that doesn't use all 4 bytes:
+
+        clf
+
+        Would translate to
+
+        40 00 00 00
+
+        In machine code, only utilizing the opcode. The rest of the
+        instruction is irrelevant because clf takes 0 arguments
+
 :: Subroutines
 
         Subroutines are created using the label syntax seen in other diale-
