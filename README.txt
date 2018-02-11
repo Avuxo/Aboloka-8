@@ -87,8 +87,8 @@ Aboloka-8
         the root directory or on a tape.
 
 
-        If you ever need to restart the Aboloka-8, use the ESC key on yo-
-        ur computer. This will restart the computer and clear the RAM.
+        If you ever need to restart the Aboloka-8, use the F1 key on you-
+        r computer. This will restart the computer and clear the RAM.
 
         Before a restart, ensure that you have put any code that you wis-
         h to backup up on a tape. Tapes will NOT be cleared at restart.
