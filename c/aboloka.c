@@ -11,7 +11,7 @@ uint32_t testProgram[] = {
 
 
 int main(int argc, char **argv){
-    struct System *sys = initCPU();
+    struct System *sys = cpu_init();
 
     cpu_executeProgram(sys, testProgram);
     

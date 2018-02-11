@@ -3,7 +3,7 @@
 #include "cpu.h"
 
 /*create a cpu object*/
-struct System *initCPU(){
+struct System *cpu_init(){
     struct System *sys = (struct System *) malloc(sizeof(sys));
 
     /*0 out CPU struct*/
@@ -21,7 +21,7 @@ struct System *initCPU(){
 void cpu_executeProgram(struct System *sys, uint32_t *program){
     /*while the current operation is not EXIT*/
     while(program[sys->cpu.pc] != 0xEA000000){
-        cpu_execOpcode(program[sys->cpu.pc]);
+        cpu_execOpcode(sys, program[sys->cpu.pc]);
         sys->cpu.pc++;
     }
 }
