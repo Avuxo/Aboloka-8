@@ -40,4 +40,6 @@ struct System{
 struct System *initCPU();
 void executeProgram(struct System *sys, uint8_t *program);
 
+void cpu_execOpcode(uint32_t opcode);
 void cpu_load(struct System *sys, uint8_t addrB1, uint8_t addrB2, uint8_t val);
+void cpu_executeProgram(struct System *sys, uint32_t *program);

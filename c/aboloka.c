@@ -2,19 +2,18 @@
 
 #include "cpu.h"
 
-uint8_t testProgram[] = {0x10, 0x00, 0x40, 0x05, /*ld #4000, $05*/
-                         0x10, 0x00, 0x32, 0x30, /*ld #3200, $30*/
-                         0x55, 0x41, /*emit #$41*/
-                         
-                         0xEA /*exit*/
+uint32_t testProgram[] = {
+    0x10004005,
+    0x10003230,
+    0x55410000,
+    0xEA000000
 };
 
 
 int main(int argc, char **argv){
     struct System *sys = initCPU();
 
-    executeProgram(sys, testProgram);
-    
+    cpu_executeProgram(sys, testProgram);
     
     return 0;
 }

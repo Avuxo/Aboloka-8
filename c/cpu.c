@@ -18,102 +18,35 @@ struct System *initCPU(){
     
 }
 
-
-/*execute a given program*/
-void executeProgram(struct System *sys, uint8_t *program){
-    /*execute each opcode until 'exit' (0xEA) is reached*/
-    while(program[sys->cpu.pc] != 0xEA){
-        /*switch statement for opcodes*/
-        switch(program[sys->cpu.pc]){
-        case 0x10:
-            /*load the value into memory*/
-            cpu_load(sys, program[++sys->cpu.pc], program[++sys->cpu.pc],
-                     program[++sys->cpu.pc]);
-            
-            break;
-        case 0x11:
-            /*load the value into the X register*/
-            sys->cpu.regX = program[++sys->cpu.pc];
-            break;
-        case 0x12:
-            /*load the value into the Y register*/
-            sys->cpu.regY = program[++sys->cpu.pc];
-            break;
-        case 0x13:
-            /*load the value into the Z register*/
-            sys->cpu.regZ = program[++sys->cpu.pc];
-            break;
-        case 0x14:
-            /*load the value into the accumulator*/
-            sys->cpu.regA = program[++sys->cpu.pc];
-            break;
-
-        case 0x1A: /*compare with the X register*/
-            if(sys->cpu.regA == program[++sys->cpu.pc])
-                /*set the eq flag*/
-                sys->cpu.flags |= 0x01;
-            break;
-        case 0x1B:
-
-            /*check if the address is the same as the A value*/
-            if(sys->cpu.regA ==
-               sys->memory[program[++sys->cpu.pc | (++sys->cpu.pc << 8)]])
-                /*set the eq flag*/
-                sys->cpu.flags |= 0x01;
-            
-        case 0x20:
-            /*jump to the next location*/
-            sys->cpu.pc = program[++sys->cpu.pc];
-            break;
-        case 0x21:
-            /*check which register is being jumped to
-              X: 0, Y: 1, Z: 2, A: 3
-             */
-            switch(program[++sys->cpu.pc]){
-            case 0x00:
-                sys->cpu.pc = sys->cpu.regX;
-            case 0x01:
-                sys->cpu.pc = sys->cpu.regY;
-            case 0x02:
-                sys->cpu.pc = sys->cpu.regZ;
-            case 0x03:
-                sys->cpu.pc = sys->cpu.regA;
-            }
-            break;
-
-        case 0x22:
-            /*check if eq flag is set*/
-            if(((sys->cpu.flags) & 0x01) == 0x01)
-                /*if set, jump*/
-                sys->cpu.pc = program[++sys->cpu.pc];
-
-            break;
-
-        case 0x30:{ /*add to the accumulator*/
-            int addNum = program[++sys->cpu.pc];
-            /*check for overflow*/
-            if((sys->cpu.regA + addNum) > 0xFF){
-                /*set the overflow flag*/
-                sys->cpu.flags |= 0x01 << 1;
-                /*set the accumulator to the result*/
-                sys->cpu.regA = (0xFF - addNum);
-            } else {
-                /*clear overflow bit and add to the accumulator*/
-                sys->cpu.flags &= ~(0x01 << 1);
-                sys->cpu.regA += addNum;
-            }
-        }
-            
-        case 0x40:
-            /*clear all flags*/
-            sys->cpu.flags = 0x00;
-            break;
-        case 0x55:
-            /*call a subroutine to write to the right place in memory*/
-            printf("%c\n", program[++sys->cpu.pc]);
-        }
-        /*consume previous byte*/
+void cpu_executeProgram(struct System *sys, uint32_t *program){
+    /*while the current operation is not EXIT*/
+    while(program[sys->cpu.pc] != 0xEA000000){
+        cpu_execOpcode(program[sys->cpu.pc]);
         sys->cpu.pc++;
+    }
+}
+
+void cpu_execOpcode(struct System *sys, uint32_t opcode){
+    uint8_t operands[4];
+    /*NOTE:
+      Although it may seem counter intuitive, the first byte of the operation
+      is operand[3] because of the bit order on x86. This is easier in my mind
+      than reversing the bit order for all opcodes.
+      The bit pattern is represented as
+      OP A1 A2 A3
+      3  2  1  0
+     */
+    for(int i=0; i<4; i++)
+        /*calculate the nth byte in the opcode*/
+        operands[i] = (opcode >> (8 * i)) & 0xFF;
+    
+    
+    printf("0x%x | %02x %02x %02x %02x\n", opcode,
+           operands[3], operands[2], operands[1], operands[0]);
+
+    switch(operands[3]){
+    case 0x10: /*ld*/
+        cpu_load(sys, operands[2], operands[1], operands[0]);
     }
 }
 
