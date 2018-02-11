@@ -238,18 +238,43 @@ Aboloka-8
         Below is an example showing both loops and branching paths using
         only the jmp and cpa instructions.
 
-        lda #$41
-        jmp repeat
-        
-        label repeat:
-            cpa #$51
-            je done
-            emit A
-            inc A
-            jmp repeat
+        The example also shows off a (non-required) function of labels:
+            they can be used inside of subroutines. They can also be
+            used outside of subroutines, but it's better to show that
+            they can be used inside.
 
-        label done:
-            exit
+        subroutine test:
+            lda #$41
+            jmp repeat
+        
+            label repeat:
+                cpa #$51
+                je done
+                emit A
+                inc A
+                jmp repeat
+
+            label done:
+                exit
+
+        It should be noted however that labels are NOT scoped meaning
+        that jumping to a label inside of another subroutine could lead
+        to an issue. Just bear this in mind while using labels as it is
+        the major limitation relating to them.
+
+        In terms of naming conventions, labels should probably be named
+        as follows:
+
+        SUBNAME_ACTION
+
+        The above example's labels would be better named as:
+
+        repeat -> test_repeat
+        done   -> test_done
+
+        As to fit within these naming conventions. They were named as
+        shown simply for readability reasons (and there can't be scop-
+        ing issues in a code snippet).
 
 :: Memory Layout
 
