@@ -47,6 +47,48 @@ void cpu_execOpcode(struct System *sys, uint32_t opcode){
     switch(operands[3]){
     case 0x10: /*ld*/
         cpu_load(sys, operands[2], operands[1], operands[0]);
+        break;
+    case 0x11: /*ldx*/
+        sys->cpu.regX = operands[2];
+        break;
+    case 0x12: /*ldy*/
+        sys->cpu.regY = operands[2];
+        break;
+    case 0x13:
+        sys->cpu.regZ = operands[2];
+        break;
+    case 0x14:
+        sys->cpu.regA = operands[2];
+        break;
+    case 0x1A:
+        if(sys->cpu.regA == operands[2])
+            /*set the eq flag*/
+            sys->cpu.flags |= 0x01;
+        break;
+    case 0x1B:
+        /*check if the address is the same as the A value*/
+        if(sys->cpu.regA ==
+           /*apply 16 bit bitmask to get address*/
+           sys->memory[(opcode >> (8)) & 0xFFFF])
+            /*set the eq flag*/
+            sys->cpu.flags |= 0x01;
+        break;
+    case 0x20:
+        /*apply 16 bit bitmask to get the address*/
+        sys->cpu.pc = (opcode >> (8) & 0xFFFF);
+        break;
+    case 0x22:
+        /*check for eq flag*/
+        if(((sys->cpu.flags) & 0x01) == 0x01)
+            /*jump to 16 bit address*/
+            sys->cpu.pc = (opcode >> (8) & 0xFFFF);
+
+    case 0x40:
+        /*clear all CPU flags*/
+        sys->cpu.flags = 0x00;
+    case 0x55:
+        
+        printf("%c\n", operands[2]);
     }
 }
 

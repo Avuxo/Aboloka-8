@@ -132,7 +132,7 @@ Aboloka-8
         cpz #$VALUE           1E   compare the hex value VALUE with Z     2
         cpz $ADDRESS          1F   compare Z with the value at address    3
         
-        jmp #$VALUE           20   jump to the memory location VALUE      3
+        jmp $ADDRESS          20   jump to the memory location ADDRESS    3
         jmp REG               21   jump to the register REG               2
         je  $ADDRESS          22   jump only if eq flag is set            3
         jne $ADDRESS          23   jump only if eq flag is not set        3
@@ -163,6 +163,9 @@ Aboloka-8
         bytes. However, not all instructions use all 32 bits, all unused
         bits are simply zeroed out in this case. The below diagram explains
         the bit pattern of opcodes.
+        
+        [opcode: 8 bits][operands:  24 bits]
+                        [arg1] [arg2] [arg3]
 
         01 23 45 67
          |  |  |  |
