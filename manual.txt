@@ -152,7 +152,8 @@ Aboloka-8
         clf                   40   clear all status flags                 1
         
         emit #$VALUE          55   echo a single ascii character          2
-        print $ADDRESS        56   print at ADDRESS until a 0x00 is found 3
+        emit REG              46   echo a single character in a register  2
+        print $ADDRESS        57   print at ADDRESS until a 0x00 is found 3
         
         exit                  EA   exit the program                       1
 
@@ -207,7 +208,7 @@ Aboloka-8
 
         ; subroutine to add 2 numbers
         ; add (int a, in b) -> (int c)
-        add:
+        subroutine add:
             add X ; add A to X
             ret   ; jump back to call location
 
@@ -227,6 +228,28 @@ Aboloka-8
         The call stack goes from $1001-$11f5, if the subroutine attempts
         to push an address any further than that, it will raise a stack
         overflow exception.
+
+:: Labels
+
+        An alternative to the subroutine mechanism is the ability to
+        create human-readable labels to jump to. Using this mechani-
+        sm, it is easy to create loops or branching paths.
+
+        Below is an example showing both loops and branching paths using
+        only the jmp and cpa instructions.
+
+        lda #$41
+        jmp repeat
+        
+        label repeat:
+            cpa #$51
+            je done
+            emit A
+            inc A
+            jmp repeat
+
+        label done:
+            exit
 
 :: Memory Layout
 
