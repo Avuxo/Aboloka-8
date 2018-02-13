@@ -154,7 +154,8 @@ Aboloka-8
         emit #$VALUE          55   echo a single ascii character          2
         emit REG              46   echo a single character in a register  2
         print $ADDRESS        57   print at ADDRESS until a 0x00 is found 3
-        
+
+        nop                   E9   do nothing                             1
         exit                  EA   exit the program                       1
 
 
